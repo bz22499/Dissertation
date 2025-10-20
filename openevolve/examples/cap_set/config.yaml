@@ -1,0 +1,47 @@
+# config.yaml
+problem_name: cap_set
+initial_program_path: initial_program.py
+evaluator_script_path: evaluator.py
+language: python
+goal: maximize
+max_iterations: 50 # Increased iterations
+
+# LLM configuration (As provided before)
+llm:
+  primary_model: "gpt-oss:120b-cloud"
+  api_base: "http://localhost:11434/v1"
+  temperature: 0.7
+  max_tokens: 16000
+  timeout: 120
+
+# Prompt configuration (As provided before)
+prompt:
+  system_message: "You are an expert programmer specializing in combinatorial optimization. Your task is to improve a solver algorithm to find the largest possible cap set for a given dimension `n`. A cap set is a subset of vectors in (Z/3Z)^n where no three distinct vectors sum to zero (i.e., no three elements form a line). Focus on improving the `solve` function to find a larger cap set. Respond ONLY with a valid unified diff patch. Do not include explanations, prose, or commentary. The diff must apply cleanly to the provided Python source."
+
+# Database configuration (As provided before)
+database:
+  population_size: 50
+  archive_size: 20
+  num_islands: 3
+  elite_selection_ratio: 0.2
+  exploitation_ratio: 0.7
+  embedding_model: "text-embedding-3-small"
+  similarity_threshold: 0.99
+  # NOTE: use_llm_novelty_check removed from here
+
+# Evaluator configuration (As provided before)
+evaluator:
+  timeout: 60
+  cascade_evaluation: false
+  cascade_thresholds: []
+  parallel_evaluations: 3
+
+# Evolution settings (As provided before)
+diff_based_evolution: true
+max_code_length: 20000
+
+# ### THIS IS THE FIX ###
+# Novelty Judge configuration section
+novelty_judge:
+  use_llm_novelty_check: false # Moved here and set to false
+  # Other novelty settings could go here if needed
