@@ -20,7 +20,6 @@ def is_cap_set(vectors: np.ndarray) -> bool:
     """
     Returns whether `vectors` form a valid cap set.
     """
-    # ... (Keep the rest of is_cap_set function as it was, including debug prints) ...
     print(f"DEBUG (is_cap_set): Checking validity. Input type={type(vectors)}, shape={getattr(vectors, 'shape', 'N/A')}")
     sys.stdout.flush()
 
@@ -82,15 +81,14 @@ def is_cap_set(vectors: np.ndarray) -> bool:
         sys.stdout.flush()
         return True
 
-# ### THIS IS THE MAIN FIX ###
 # Change the signature to accept *args, **kwargs to catch any unexpected arguments
-# But explicitly set n = 4 inside the function
+# But explicitly set n = 5 inside the function
 def evaluate(*args, **kwargs) -> dict[str, float]:
     """
     Returns a dictionary of metrics for the `n`-dimensional cap set.
-    Ignores any arguments passed and always uses n=4.
+    Ignores any arguments passed and always uses n=5.
     """
-    n = 4 # Explicitly set n here to override incorrect arguments
+    n = 5 # Explicitly set n here to override incorrect arguments
     print(f"\nDEBUG (evaluator): Starting evaluation. Forcing n={n}") # Updated debug print
     sys.stdout.flush()
     score = 0.0 # Default score
@@ -135,7 +133,7 @@ if __name__ == "__main__":
     # Allows running evaluator directly for testing
     # Argument parsing here is mainly for direct testing, evaluate() now ignores args
     parser = argparse.ArgumentParser()
-    parser.add_argument("--n", type=int, default=4, help="Dimension for cap set (only used for direct run)")
+    parser.add_argument("--n", type=int, default=5, help="Dimension for cap set (only used for direct run)")
     args = parser.parse_args()
 
     print("--- Running evaluator directly ---")

@@ -4,21 +4,22 @@ initial_program_path: initial_program.py
 evaluator_script_path: evaluator.py
 language: python
 goal: maximize
-max_iterations: 50 # Increased iterations
+max_iterations: 10 # <-- SET TO 10 FOR DEBUGGING
 
-# LLM configuration (As provided before)
+# LLM configuration
 llm:
   primary_model: "gpt-oss:120b-cloud"
   api_base: "http://localhost:11434/v1"
-  temperature: 0.7
+  temperature: 0.8 # Slightly higher temp
   max_tokens: 16000
   timeout: 120
 
-# Prompt configuration (As provided before)
+# Prompt configuration
 prompt:
-  system_message: "You are an expert programmer specializing in combinatorial optimization. Your task is to improve a solver algorithm to find the largest possible cap set for a given dimension `n`. A cap set is a subset of vectors in (Z/3Z)^n where no three distinct vectors sum to zero (i.e., no three elements form a line). Focus on improving the `solve` function to find a larger cap set. Respond ONLY with a valid unified diff patch. Do not include explanations, prose, or commentary. The diff must apply cleanly to the provided Python source."
+  system_message: "You are optimizing a priority function for cap set construction. The function `priority_function(v, n)` takes a vector `v` (tuple of 0,1,2 values) and dimension `n`, returning a float priority. Higher priority vectors are selected first. Modify ONLY the priority_function to find larger cap sets. Return only the improved function code."
 
-# Database configuration (As provided before)
+
+# Database configuration
 database:
   population_size: 50
   archive_size: 20
@@ -27,21 +28,25 @@ database:
   exploitation_ratio: 0.7
   embedding_model: "text-embedding-3-small"
   similarity_threshold: 0.99
-  # NOTE: use_llm_novelty_check removed from here
 
-# Evaluator configuration (As provided before)
+# Evaluator configuration
 evaluator:
-  timeout: 60
+  timeout: 60 # Might need longer timeout for n=5 brute force? Keep for now.
   cascade_evaluation: false
   cascade_thresholds: []
   parallel_evaluations: 3
 
-# Evolution settings (As provided before)
-diff_based_evolution: true
+# Evolution settings
+diff_based_evolution: false # Use full rewrite
 max_code_length: 20000
 
-# ### THIS IS THE FIX ###
-# Novelty Judge configuration section
+# Novelty Judge configuration
 novelty_judge:
-  use_llm_novelty_check: false # Moved here and set to false
-  # Other novelty settings could go here if needed
+  use_llm_novelty_check: false
+
+# Add this section to your config.yaml
+logging:
+  level: DEBUG
+  log_llm_requests: true
+  log_llm_responses: true
+  log_file: "llm_debug.log"
